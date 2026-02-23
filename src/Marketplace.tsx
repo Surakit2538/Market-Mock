@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { 
-  FileText, HelpCircle, Settings, TrendingUp, DollarSign, 
+import {
+  FileText, HelpCircle, Settings, TrendingUp, DollarSign,
   Sparkles, Flag, ThumbsUp, Code, List, Wallet, Search,
   ChevronRight, ChevronLeft, AlertCircle, CheckCircle2,
   Heart, Filter, X, Monitor, Gamepad2, Box, Hexagon,
@@ -23,6 +23,24 @@ const translations = {
     findMail: 'ค้นหาเจ้าของอีเมล',
     proxyProblem: 'ปัญหาเกี่ยวกับบริการพร็อกซี',
     proxyDesc: 'เรากำลังพบปัญหาเกี่ยวกับบริการพร็อกซี การตรวจสอบบัญชีอาจทำงานไม่ถูกต้อง โปรดอย่าสร้างปัญหาที่เกี่ยวข้องกับการตรวจสอบบัญชี',
+    // New Translations
+    categoryGames: 'หมวดหมู่เกม',
+    categoryItems: 'ประเภทสินค้า',
+    allGames: 'เกมทั้งหมด',
+    action: 'Action',
+    rpg: 'RPG',
+    fps: 'FPS',
+    moba: 'MOBA',
+    allTypes: 'ประเภททั้งหมด',
+    typeAccount: 'บัญชี (Account)',
+    typeItem: 'ไอเทม (Item)',
+    typeBoost: 'บริการรับจ้างเล่น (Boosting)',
+    marketInsight: 'ข้อมูลเชิงลึกของตลาด',
+    suggestedPrice: 'ราคาประเมินสำหรับสินค้านี้',
+    basedOnMarket: 'อิงจากสถิติราคาเฉลี่ยในตลาดปัจจุบัน',
+    stock: 'จำนวนในสต็อก:',
+    instantDelivery: 'จัดส่งทันที',
+    // End New Translations
     oftenSearched: 'ค้นหาบ่อยใน Steam',
     topSellers: 'ผู้ขายยอดนิยม 90 วันล่าสุด — Steam',
     feedbacks: 'ความคิดเห็น',
@@ -32,14 +50,14 @@ const translations = {
     showFilters: 'แสดงตัวกรอง',
     alwaysShow: 'แสดงเสมอ',
     reset: 'รีเซ็ต',
-    shownAccounts: 'แสดง ~ 351,942 บัญชี',
+    shownAccounts: 'แสดง ~ 351,942 สินค้า',
     default: 'ค่าเริ่มต้น',
     cheapFirst: 'ราคาถูกก่อน',
     expensiveFirst: 'ราคาแพงก่อน',
     newest: 'ใหม่ล่าสุด',
     oldest: 'เก่าสุด',
     saveSearch: 'บันทึกการค้นหา',
-    steamAccounts: 'ขายบัญชี Steam',
+    steamAccounts: 'รายการสินค้า P2P',
     warranty: 'รับประกัน 24 ชั่วโมง',
     played: 'เล่นรวม 4.10 ชม. ใน 2 สัปดาห์',
     lastSeen: 'พบล่าสุดเมื่อ 12 ก.พ. 2026',
@@ -61,6 +79,24 @@ const translations = {
     findMail: 'Find out whose mail',
     proxyProblem: 'Problems with proxy service',
     proxyDesc: 'We are observing problems with proxy service, account validation may not work properly. Do not create issues related to account validation issues',
+    // New Translations
+    categoryGames: 'Game Categories',
+    categoryItems: 'Item Types',
+    allGames: 'All Games',
+    action: 'Action',
+    rpg: 'RPG',
+    fps: 'FPS',
+    moba: 'MOBA',
+    allTypes: 'All Types',
+    typeAccount: 'Account',
+    typeItem: 'In-Game Item',
+    typeBoost: 'Boosting Service',
+    marketInsight: 'Market Insight',
+    suggestedPrice: 'Suggested Selling Price',
+    basedOnMarket: 'Based on current market average statistics',
+    stock: 'Stock:',
+    instantDelivery: 'Instant Delivery',
+    // End New Translations
     oftenSearched: 'Often searched in Steam',
     topSellers: 'Top sellers last 90 days — Steam',
     feedbacks: 'Feedbacks',
@@ -70,14 +106,14 @@ const translations = {
     showFilters: 'Show filters',
     alwaysShow: 'Always show',
     reset: 'Reset',
-    shownAccounts: 'Shown ~ 351,942 accounts',
+    shownAccounts: 'Shown ~ 351,942 listings',
     default: 'Default',
     cheapFirst: 'Cheap first',
     expensiveFirst: 'Expensive first',
     newest: 'Newest',
     oldest: 'Oldest',
     saveSearch: 'Save search',
-    steamAccounts: 'Продажа аккаунтов Steam',
+    steamAccounts: 'P2P Listings',
     warranty: '24 hours warranty',
     played: '4.10 hrs. total played for 2 weeks',
     lastSeen: 'Last seen on Feb 12, 2026',
@@ -100,17 +136,8 @@ const PLATFORMS = [
   { id: 'valorant', icon: Box },
 ];
 
-const OFTEN_SEARCHED = [
-  'Euro Truck Simulator 2', 'Arma Reforger', 'CS2 Prime', 'GTA 5', 'PUBG'
-];
-
-const TOP_SELLERS = [
-  { name: 'scarly', feedbacks: 100, rating: 100, avatar: 'https://picsum.photos/seed/1/40/40' },
-  { name: 'MAX_PAYNE', feedbacks: 19, rating: 100, avatar: 'https://picsum.photos/seed/2/40/40' },
-  { name: 'Zlatan', feedbacks: 17, rating: 99, avatar: 'https://picsum.photos/seed/3/40/40' },
-  { name: 'Kwerity', feedbacks: 16, rating: 100, avatar: 'https://picsum.photos/seed/4/40/40' },
-  { name: 'Pa6oTsrra', feedbacks: 14, rating: 99, avatar: 'https://picsum.photos/seed/5/40/40' },
-];
+const GAME_CATEGORIES = ['action', 'rpg', 'fps', 'moba'];
+const ITEM_CATEGORIES = ['typeAccount', 'typeItem', 'typeBoost'];
 
 export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
   const t = translations[lang];
@@ -158,7 +185,7 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">
-        
+
         {/* Alert Banner */}
         <div className="bg-[#141414] border border-white/5 rounded-xl p-5">
           <h3 className="font-semibold text-white mb-1">{t.proxyProblem}</h3>
@@ -174,11 +201,10 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
             return (
               <button
                 key={idx}
-                className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-colors ${
-                  p.active 
-                    ? 'bg-[#1a1a1a] border-emerald-500/50 text-emerald-400' 
-                    : 'bg-[#141414] border-white/5 text-gray-400 hover:bg-white/5 hover:text-white'
-                }`}
+                className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-colors ${p.active
+                  ? 'bg-[#1a1a1a] border-emerald-500/50 text-emerald-400'
+                  : 'bg-[#141414] border-white/5 text-gray-400 hover:bg-white/5 hover:text-white'
+                  }`}
               >
                 <Icon size={24} />
               </button>
@@ -186,37 +212,69 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
           })}
         </div>
 
-        {/* Often Searched */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Monitor size={20} className="text-blue-400" /> {t.oftenSearched}
-          </h2>
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {OFTEN_SEARCHED.map((game, idx) => (
-              <button key={idx} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#141414] border border-white/5 hover:bg-white/10 transition-colors whitespace-nowrap text-sm font-medium">
-                <img src={`https://picsum.photos/seed/${game}/20/20`} alt={game} className="w-5 h-5 rounded object-cover" referrerPolicy="no-referrer" />
-                {game}
-              </button>
-            ))}
+        {/* Categories Panel */}
+        <section className="bg-[#141414] border border-white/5 rounded-xl p-6">
+          <div className="flex flex-col gap-6">
+
+            {/* Game Categories */}
+            <div>
+              <h2 className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">{t.categoryGames}</h2>
+              <div className="flex flex-wrap gap-2">
+                <button className="px-5 py-2 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-sm font-medium transition-colors">
+                  {t.allGames}
+                </button>
+                {GAME_CATEGORIES.map((cat, idx) => (
+                  <button key={idx} className="px-5 py-2 rounded-full bg-[#1a1a1a] border border-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium">
+                    {t[cat as keyof typeof t]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px w-full bg-white/5" />
+
+            {/* Item Types */}
+            <div>
+              <h2 className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">{t.categoryItems}</h2>
+              <div className="flex flex-wrap gap-2">
+                <button className="px-5 py-2 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-sm font-medium transition-colors">
+                  {t.allTypes}
+                </button>
+                {ITEM_CATEGORIES.map((cat, idx) => (
+                  <button key={idx} className="px-5 py-2 rounded-full bg-[#1a1a1a] border border-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium">
+                    {t[cat as keyof typeof t]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
           </div>
         </section>
 
-        {/* Top Sellers */}
+        {/* Automated Pricing Suggestion Widget */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Monitor size={20} className="text-blue-400" /> {t.topSellers}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {TOP_SELLERS.map((seller, idx) => (
-              <div key={idx} className="bg-[#141414] border border-white/5 rounded-xl p-4 flex flex-col items-center text-center hover:bg-white/5 transition-colors cursor-pointer">
-                <img src={seller.avatar} alt={seller.name} className="w-12 h-12 rounded-full mb-3" referrerPolicy="no-referrer" />
-                <h4 className="font-medium text-white text-sm mb-1">{seller.name}</h4>
-                <p className="text-xs text-gray-500 mb-2">{t.feedbacks}: {seller.feedbacks}</p>
-                <div className="flex items-center gap-1 text-emerald-400 text-xs font-medium">
-                  <CheckCircle2 size={12} /> {seller.rating} %
-                </div>
+          <div className="relative overflow-hidden bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-500/20 rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+
+            <div className="flex items-start gap-4 z-10">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30 shrink-0">
+                <TrendingUp className="text-blue-400" size={24} />
               </div>
-            ))}
+              <div>
+                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <Sparkles size={16} className="text-blue-400" /> {t.marketInsight}
+                </h3>
+                <p className="text-sm text-gray-400 mt-1">{t.basedOnMarket}</p>
+              </div>
+            </div>
+
+            <div className="bg-[#0a0a0a]/50 backdrop-blur-md border border-white/10 rounded-lg px-6 py-3 z-10 w-full sm:w-auto text-center sm:text-right">
+              <p className="text-xs text-gray-400 mb-1">{t.suggestedPrice}</p>
+              <div className="text-2xl font-bold text-white tracking-tight">
+                $45.00 <span className="text-gray-500 font-medium text-lg">-</span> $65.00
+              </div>
+            </div>
           </div>
         </section>
 
@@ -282,8 +340,13 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
         </div>
 
         {/* Product Card */}
-        <div className="bg-[#141414] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors cursor-pointer group">
-          <div className="flex justify-between items-start mb-3">
+        <div className="bg-[#141414] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors cursor-pointer group relative overflow-hidden">
+          {/* Instant Delivery Badge */}
+          <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+            <Sparkles size={10} /> {t.instantDelivery}
+          </div>
+
+          <div className="flex justify-between items-start mb-3 mt-2">
             <h3 className="text-white font-medium flex items-center gap-2 group-hover:text-blue-400 transition-colors">
               <Monitor size={16} className="text-blue-400" /> Cs2 prime + inventory 25000r
             </h3>
@@ -291,8 +354,12 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
               $ 202.95
             </div>
           </div>
-          
-          <div className="flex flex-wrap gap-2 mb-3">
+
+          <div className="flex flex-wrap gap-2 mb-3 items-center">
+            {/* Stock Badge */}
+            <span className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded text-xs font-semibold flex items-center gap-1">
+              <Box size={12} /> {t.stock} 45
+            </span>
             <span className="px-3 py-1 bg-[#1a1a1a] rounded text-xs font-medium text-gray-400">SDA</span>
             <span className="px-3 py-1 bg-red-500/10 text-red-400 rounded text-xs font-medium flex items-center gap-1">
               <Clock size={12} /> {t.lastSeen}
@@ -308,18 +375,18 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3">
+            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3 border border-white/5">
               <img src="https://picsum.photos/seed/cs2/24/24" alt="CS2" className="w-6 h-6 rounded" referrerPolicy="no-referrer" />
               <div className="flex flex-col">
                 <span className="text-[10px] text-purple-400 font-bold bg-purple-500/20 px-1 rounded">18,452</span>
               </div>
               <span className="text-xs font-medium text-gray-300 ml-1">CS2 Prime 23 lvl</span>
             </div>
-            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3">
+            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3 border border-white/5">
               <img src="https://picsum.photos/seed/beyond/24/24" alt="Beyond" className="w-6 h-6 rounded" referrerPolicy="no-referrer" />
               <span className="text-xs font-medium text-gray-300">Beyond: Two Souls</span>
             </div>
-            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3">
+            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3 border border-white/5">
               <img src="https://picsum.photos/seed/soundpad/24/24" alt="Soundpad" className="w-6 h-6 rounded" referrerPolicy="no-referrer" />
               <span className="text-xs font-medium text-gray-300">Soundpad</span>
             </div>
@@ -337,7 +404,7 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
 function ChevronDownIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6"/>
+      <path d="m6 9 6 6 6-6" />
     </svg>
   );
 }

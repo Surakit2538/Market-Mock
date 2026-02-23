@@ -7,6 +7,7 @@ import {
   User,
 } from 'lucide-react';
 import Marketplace from './Marketplace';
+import Auth from './Auth';
 
 const translations = {
   TH: {
@@ -36,9 +37,13 @@ type Lang = 'TH' | 'EN';
 export default function App() {
   const [langOpen, setLangOpen] = useState(false);
   const [lang, setLang] = useState<Lang>('EN');
-  const [view, setView] = useState<'landing' | 'market'>('landing');
+  const [view, setView] = useState<'landing' | 'market' | 'auth'>('landing');
 
   const t = translations[lang];
+
+  if (view === 'auth') {
+    return <Auth onBack={() => setView('landing')} lang={lang} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#050505] p-2 md:p-4 font-sans text-white flex flex-col selection:bg-white/20">
@@ -89,7 +94,10 @@ export default function App() {
                 </div>
               )}
             </div>
-            <button className="flex items-center gap-2 text-sm font-medium hover:text-gray-300 transition-colors">
+            <button 
+              onClick={() => setView('auth')}
+              className="flex items-center gap-2 text-sm font-medium hover:text-gray-300 transition-colors"
+            >
               <User className="w-4 h-4" />
               <span className="hidden sm:inline">{t.loginSignup}</span>
             </button>

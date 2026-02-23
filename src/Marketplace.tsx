@@ -31,6 +31,10 @@ const translations = {
     rpg: 'RPG',
     fps: 'FPS',
     moba: 'MOBA',
+    strategy: 'Strategy',
+    sports: 'Sports',
+    simulation: 'Simulation',
+    etc: 'อื่นๆ (Etc)',
     allTypes: 'ประเภททั้งหมด',
     typeAccount: 'บัญชี (Account)',
     typeItem: 'ไอเทม (Item)',
@@ -87,6 +91,10 @@ const translations = {
     rpg: 'RPG',
     fps: 'FPS',
     moba: 'MOBA',
+    strategy: 'Strategy',
+    sports: 'Sports',
+    simulation: 'Simulation',
+    etc: 'Others',
     allTypes: 'All Types',
     typeAccount: 'Account',
     typeItem: 'In-Game Item',
@@ -136,7 +144,7 @@ const PLATFORMS = [
   { id: 'valorant', icon: Box },
 ];
 
-const GAME_CATEGORIES = ['action', 'rpg', 'fps', 'moba'];
+const GAME_CATEGORIES = ['action', 'rpg', 'fps', 'moba', 'strategy', 'sports', 'simulation', 'etc'];
 const ITEM_CATEGORIES = ['typeAccount', 'typeItem', 'typeBoost'];
 
 export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
@@ -186,46 +194,31 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">
 
-        {/* Alert Banner */}
-        <div className="bg-[#141414] border border-white/5 rounded-xl p-5">
-          <h3 className="font-semibold text-white mb-1">{t.proxyProblem}</h3>
-          <p className="text-sm text-gray-400">
-            {t.proxyDesc}
-          </p>
-        </div>
-
-        {/* Platforms Grid */}
-        <div className="flex flex-wrap gap-2">
-          {PLATFORMS.map((p, idx) => {
-            const Icon = p.icon;
-            return (
-              <button
-                key={idx}
-                className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-colors ${p.active
-                  ? 'bg-[#1a1a1a] border-emerald-500/50 text-emerald-400'
-                  : 'bg-[#141414] border-white/5 text-gray-400 hover:bg-white/5 hover:text-white'
-                  }`}
-              >
-                <Icon size={24} />
-              </button>
-            );
-          })}
-        </div>
-
         {/* Categories Panel */}
-        <section className="bg-[#141414] border border-white/5 rounded-xl p-6">
-          <div className="flex flex-col gap-6">
+        <section className="bg-[#141414] border border-white/5 rounded-xl p-5">
+          <div className="flex flex-col gap-5">
 
-            {/* Game Categories */}
+            {/* Game Categories (Circular Cards - Scrollable Single Row) */}
             <div>
-              <h2 className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">{t.categoryGames}</h2>
-              <div className="flex flex-wrap gap-2">
-                <button className="px-5 py-2 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-sm font-medium transition-colors">
-                  {t.allGames}
-                </button>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-sm font-semibold text-gray-300">{t.categoryGames}</h2>
+              </div>
+
+              <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x pt-2">
                 {GAME_CATEGORIES.map((cat, idx) => (
-                  <button key={idx} className="px-5 py-2 rounded-full bg-[#1a1a1a] border border-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium">
-                    {t[cat as keyof typeof t]}
+                  <button key={idx} className="flex flex-col items-center gap-2 group outline-none shrink-0 snap-center w-[64px] sm:w-[80px]">
+                    <div className="w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border-2 border-transparent group-hover:border-blue-500/50 transition-all duration-300 bg-[#1a1a1a] shadow-lg relative group-active:scale-95">
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+                      <img
+                        src={`https://picsum.photos/seed/${cat}game/100/100`}
+                        alt={cat}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <span className="text-[11px] sm:text-xs font-semibold text-gray-400 group-hover:text-white text-center leading-tight transition-colors">
+                      {t[cat as keyof typeof t]}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -236,13 +229,13 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
 
             {/* Item Types */}
             <div>
-              <h2 className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wider">{t.categoryItems}</h2>
+              <h2 className="text-sm font-semibold text-gray-300 mb-2">{t.categoryItems}</h2>
               <div className="flex flex-wrap gap-2">
-                <button className="px-5 py-2 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-sm font-medium transition-colors">
+                <button className="px-4 py-1.5 rounded-full bg-[#0c1f17] text-emerald-400 border border-emerald-500/30 text-xs font-medium transition-colors">
                   {t.allTypes}
                 </button>
                 {ITEM_CATEGORIES.map((cat, idx) => (
-                  <button key={idx} className="px-5 py-2 rounded-full bg-[#1a1a1a] border border-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium">
+                  <button key={idx} className="px-4 py-1.5 rounded-full bg-[#1a1a1a] border border-white/5 text-gray-400 hover:text-gray-300 hover:bg-white/5 transition-colors text-xs font-medium">
                     {t[cat as keyof typeof t]}
                   </button>
                 ))}
@@ -254,70 +247,79 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
 
         {/* Automated Pricing Suggestion Widget */}
         <section>
-          <div className="relative overflow-hidden bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-500/20 rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+          <div className="bg-[#101017] border border-[#2a2a3c] rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative overflow-hidden">
+            {/* Subtle glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 pointer-events-none"></div>
 
             <div className="flex items-start gap-4 z-10">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30 shrink-0">
-                <TrendingUp className="text-blue-400" size={24} />
+              <div className="w-10 h-10 rounded-lg bg-[#1a1a2e] flex items-center justify-center shrink-0">
+                <TrendingUp className="text-blue-400" size={20} />
               </div>
-              <div>
-                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Sparkles size={16} className="text-blue-400" /> {t.marketInsight}
+              <div className="pt-0.5">
+                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
+                  <Sparkles size={14} className="text-blue-400" /> {t.marketInsight}
                 </h3>
-                <p className="text-sm text-gray-400 mt-1">{t.basedOnMarket}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{t.basedOnMarket}</p>
               </div>
             </div>
 
-            <div className="bg-[#0a0a0a]/50 backdrop-blur-md border border-white/10 rounded-lg px-6 py-3 z-10 w-full sm:w-auto text-center sm:text-right">
-              <p className="text-xs text-gray-400 mb-1">{t.suggestedPrice}</p>
-              <div className="text-2xl font-bold text-white tracking-tight">
-                $45.00 <span className="text-gray-500 font-medium text-lg">-</span> $65.00
+            <div className="bg-[#0a0a0a] border border-white/5 rounded-lg px-5 py-3 z-10 w-full sm:w-auto text-center sm:text-right">
+              <p className="text-[10px] text-gray-400 mb-1">{t.suggestedPrice}</p>
+              <div className="text-xl font-bold text-white tracking-tight flex items-baseline justify-center sm:justify-end gap-1.5">
+                $45.00 <span className="text-gray-500 font-medium text-sm">-</span> $65.00
               </div>
             </div>
           </div>
         </section>
 
         {/* Filters */}
-        <section className="bg-[#141414] border border-white/5 rounded-xl p-4 space-y-4">
+        <section className="bg-[#101017] border border-[#2a2a3c] rounded-xl p-4 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex items-center bg-[#0a0a0a] rounded-lg border border-white/5 px-3 py-2 flex-1 md:max-w-xs">
-              <span className="text-gray-500 text-sm mr-2">{t.priceFrom}</span>
-              <span className="text-gray-600 mr-2">$</span>
-              <input type="text" className="bg-transparent outline-none text-white w-full text-sm" />
+            <div className="flex items-center bg-[#0a0a0a] rounded flex-1 md:max-w-[200px]">
+              <div className="px-4 text-xs font-semibold text-gray-500 whitespace-nowrap border-r border-white/5 h-full flex items-center bg-[#141414] rounded-l">
+                {t.priceFrom} <span className="ml-2 text-white/40">$</span>
+              </div>
+              <input type="text" className="bg-transparent outline-none text-white w-full text-sm px-3 py-2" />
             </div>
-            <div className="flex items-center bg-[#0a0a0a] rounded-lg border border-white/5 px-3 py-2 flex-1 md:max-w-xs">
-              <span className="text-gray-500 text-sm mr-2">{t.upTo}</span>
-              <span className="text-gray-600 mr-2">$</span>
-              <input type="text" className="bg-transparent outline-none text-white w-full text-sm" />
+
+            <div className="flex items-center bg-[#0a0a0a] rounded flex-1 md:max-w-[200px]">
+              <div className="px-4 text-xs font-semibold text-gray-500 whitespace-nowrap border-r border-white/5 h-full flex items-center bg-[#141414] rounded-l">
+                {t.upTo} <span className="ml-2 text-white/40">$</span>
+              </div>
+              <input type="text" className="bg-transparent outline-none text-white w-full text-sm px-3 py-2" />
             </div>
-            <div className="flex items-center bg-[#0a0a0a] rounded-lg border border-white/5 px-3 py-2 flex-1">
-              <input type="text" placeholder={t.searchTitle} className="bg-transparent outline-none text-white w-full text-sm" />
+
+            <div className="flex items-center bg-[#0a0a0a] rounded flex-1">
+              <input type="text" placeholder={t.searchTitle} className="bg-transparent outline-none text-white w-full text-sm px-4 py-2" />
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm font-medium hover:bg-white/10 transition-colors">
-              {t.showFilters} <ChevronDownIcon />
-            </button>
-            <span className="text-sm font-medium text-white">{t.alwaysShow}</span>
-            <div className="flex-1"></div>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition-colors">
-              {t.reset} <X size={16} />
-            </button>
-            <div className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/5 text-sm font-medium text-gray-400">
-              {t.shownAccounts}
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div className="flex items-center gap-4">
+              <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-[#1a1a2e] border border-white/5 text-xs font-medium text-gray-300 hover:text-white transition-colors">
+                {t.showFilters} <ChevronDownIcon />
+              </button>
+              <span className="text-xs font-medium text-gray-400">{t.alwaysShow}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <button className="flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors">
+                {t.reset} <X size={14} />
+              </button>
+              <div className="px-3 py-1.5 rounded bg-[#1a1a2e] border border-white/5 text-xs font-medium text-gray-400">
+                {t.shownAccounts}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2">
-            <button className="px-4 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-sm font-medium">{t.default}</button>
-            <button className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/5 text-sm font-medium hover:bg-white/10 transition-colors">{t.cheapFirst}</button>
-            <button className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/5 text-sm font-medium hover:bg-white/10 transition-colors">{t.expensiveFirst}</button>
-            <button className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/5 text-sm font-medium hover:bg-white/10 transition-colors flex items-center gap-2">{t.newest} <ChevronDownIcon /></button>
-            <button className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/5 text-sm font-medium hover:bg-white/10 transition-colors flex items-center gap-2">{t.oldest} <ChevronDownIcon /></button>
-            <button className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-white/5 text-sm font-medium hover:bg-white/10 transition-colors flex items-center gap-2 ml-auto">
-              <Heart size={16} /> {t.saveSearch}
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/5 mt-2">
+            <button className="px-4 py-1.5 rounded text-emerald-400 text-xs font-medium transition-colors border border-emerald-500/30 bg-[#0c1f17]">{t.default}</button>
+            <button className="px-4 py-1.5 rounded bg-[#141414] border border-white/5 text-gray-400 hover:text-gray-300 transition-colors text-xs font-medium">{t.cheapFirst}</button>
+            <button className="px-4 py-1.5 rounded bg-[#141414] border border-white/5 text-gray-400 hover:text-gray-300 transition-colors text-xs font-medium">{t.expensiveFirst}</button>
+            <button className="px-4 py-1.5 rounded bg-[#141414] border border-white/5 text-gray-400 hover:text-gray-300 transition-colors flex items-center gap-2 text-xs font-medium">{t.newest} <ChevronDownIcon /></button>
+            <button className="px-4 py-1.5 rounded bg-[#141414] border border-white/5 text-gray-400 hover:text-gray-300 transition-colors flex items-center gap-2 text-xs font-medium">{t.oldest} <ChevronDownIcon /></button>
+
+            <button className="px-4 py-1.5 rounded border border-white/5 text-gray-400 hover:text-white transition-colors flex items-center gap-2 ml-auto text-xs font-medium">
+              <Heart size={14} className="text-gray-500" /> {t.saveSearch}
             </button>
           </div>
         </section>
@@ -340,57 +342,58 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
         </div>
 
         {/* Product Card */}
-        <div className="bg-[#141414] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors cursor-pointer group relative overflow-hidden">
+        <div className="bg-[#101017] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors cursor-pointer group relative overflow-hidden flex flex-col gap-3">
           {/* Instant Delivery Badge */}
           <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
             <Sparkles size={10} /> {t.instantDelivery}
           </div>
 
-          <div className="flex justify-between items-start mb-3 mt-2">
-            <h3 className="text-white font-medium flex items-center gap-2 group-hover:text-blue-400 transition-colors">
+          <div className="flex justify-between items-start mt-2">
+            <h3 className="text-white font-medium flex items-center gap-2 text-[15px] group-hover:text-blue-400 transition-colors">
               <Monitor size={16} className="text-blue-400" /> Cs2 prime + inventory 25000r
             </h3>
-            <div className="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-md font-semibold text-sm">
+            <div className="bg-[#0c1f17] border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(16,185,129,0.1)]">
               $ 202.95
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-3 items-center">
+          <div className="flex flex-wrap gap-2 items-center">
             {/* Stock Badge */}
-            <span className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded text-xs font-semibold flex items-center gap-1">
-              <Box size={12} /> {t.stock} 45
+            <span className="px-2 py-0.5 bg-[#102a1e] border border-blue-500/20 text-blue-400 rounded text-[10px] font-semibold flex items-center gap-1">
+              <Box size={10} /> {t.stock} 45
             </span>
-            <span className="px-3 py-1 bg-[#1a1a1a] rounded text-xs font-medium text-gray-400">SDA</span>
-            <span className="px-3 py-1 bg-red-500/10 text-red-400 rounded text-xs font-medium flex items-center gap-1">
-              <Clock size={12} /> {t.lastSeen}
+            <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">SDA</span>
+            <span className="px-2 py-0.5 bg-[#2a1616] border border-red-500/20 text-red-400 rounded text-[10px] font-medium flex items-center gap-1">
+              <Clock size={10} /> {t.lastSeen}
             </span>
-            <span className="px-3 py-1 bg-[#1a1a1a] rounded text-xs font-medium text-gray-400">{t.warranty}</span>
-            <span className="px-3 py-1 bg-[#1a1a1a] rounded text-xs font-medium text-gray-400">{t.played}</span>
+            <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{t.warranty}</span>
+            <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{t.played}</span>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="px-3 py-1 bg-red-500/10 text-red-400 rounded text-xs font-medium flex items-center gap-1">
-              <AlertTriangle size={12} /> {t.lastTransaction}
+          <div className="flex flex-wrap gap-2">
+            <span className="px-2 py-0.5 bg-[#2a1616] border border-red-500/20 text-red-400 rounded text-[10px] font-medium flex items-center gap-1">
+              <AlertTriangle size={10} /> {t.lastTransaction}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3 border border-white/5">
-              <img src="https://picsum.photos/seed/cs2/24/24" alt="CS2" className="w-6 h-6 rounded" referrerPolicy="no-referrer" />
+          {/* Games inside product */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 mt-1 scrollbar-hide">
+            <div className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
+              <img src="https://picsum.photos/seed/cs2/20/20" alt="CS2" className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
               <div className="flex flex-col">
-                <span className="text-[10px] text-purple-400 font-bold bg-purple-500/20 px-1 rounded">18,452</span>
+                <span className="text-[9px] text-purple-400 font-bold bg-purple-500/10 px-1 rounded inline-block">18,452</span>
               </div>
-              <span className="text-xs font-medium text-gray-300 ml-1">CS2 Prime 23 lvl</span>
+              <span className="text-[10px] font-medium text-gray-300 ml-0.5">CS2 Prime 23 lvl</span>
             </div>
-            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3 border border-white/5">
-              <img src="https://picsum.photos/seed/beyond/24/24" alt="Beyond" className="w-6 h-6 rounded" referrerPolicy="no-referrer" />
-              <span className="text-xs font-medium text-gray-300">Beyond: Two Souls</span>
+            <div className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
+              <img src="https://picsum.photos/seed/beyond/20/20" alt="Beyond" className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
+              <span className="text-[10px] font-medium text-gray-300">Beyond: Two Souls</span>
             </div>
-            <div className="flex items-center gap-2 bg-[#1a1a1a] rounded p-1 pr-3 border border-white/5">
-              <img src="https://picsum.photos/seed/soundpad/24/24" alt="Soundpad" className="w-6 h-6 rounded" referrerPolicy="no-referrer" />
-              <span className="text-xs font-medium text-gray-300">Soundpad</span>
+            <div className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
+              <img src="https://picsum.photos/seed/soundpad/20/20" alt="Soundpad" className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
+              <span className="text-[10px] font-medium text-gray-300">Soundpad</span>
             </div>
-            <div className="px-3 py-1.5 bg-[#1a1a1a] rounded text-xs font-medium text-gray-400">
+            <div className="px-2 py-1 bg-[#141414] rounded-md text-[10px] font-medium text-gray-400 border border-white/5">
               {t.games}
             </div>
           </div>

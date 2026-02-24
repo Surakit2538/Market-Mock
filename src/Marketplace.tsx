@@ -144,11 +144,30 @@ const PLATFORMS = [
   { id: 'valorant', icon: Box },
 ];
 
-const GAME_CATEGORIES = ['action', 'rpg', 'fps', 'moba', 'strategy', 'sports', 'simulation', 'etc'];
+const GAME_CATEGORIES = ['minecraft', 'roblox', 'streaming'];
 const ITEM_CATEGORIES = ['typeAccount', 'typeItem', 'typeBoost'];
+
+const MOCK_PRODUCTS = {
+  minecraft: [
+    { id: 1, title: 'Minecraft Premium Account (Full Access)', price: 15.99, stock: 12, type: 'SDA', games: ['Minecraft', 'Hypixel'] },
+    { id: 2, title: 'Minecraft OptiFine Cape Account', price: 29.50, stock: 3, type: 'SDA', games: ['Minecraft', 'Optifine'] },
+    { id: 3, title: 'Hypixel MVP+ Account Level 100+', price: 45.00, stock: 1, type: 'SDA', games: ['Minecraft', 'Hypixel'] },
+  ],
+  roblox: [
+    { id: 4, title: 'Roblox Account with 10k Robux', price: 35.00, stock: 5, type: 'SDA', games: ['Roblox', 'Blox Fruits'] },
+    { id: 5, title: 'Blox Fruits Max Level + Kitsune', price: 22.99, stock: 8, type: 'SDA', games: ['Roblox', 'Blox Fruits'] },
+    { id: 6, title: 'Adopt Me Golden Unicorn Pet', price: 12.50, stock: 15, type: 'SDA', games: ['Roblox', 'Adopt Me'] },
+  ],
+  streaming: [
+    { id: 7, title: 'Netflix Premium 1 Month Shared', price: 4.99, stock: 50, type: 'SDA', games: ['Netflix', 'Streaming'] },
+    { id: 8, title: 'Spotify Premium Family Invite', price: 3.50, stock: 20, type: 'SDA', games: ['Spotify', 'Streaming'] },
+    { id: 9, title: 'Disney+ 3 Months Private Account', price: 10.00, stock: 10, type: 'SDA', games: ['Disney+', 'Streaming'] },
+  ]
+};
 
 export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
   const t = translations[lang];
+  const [selectedGame, setSelectedGame] = useState('minecraft');
 
   const SIDEBAR_ITEMS = [
     { icon: FileText, label: t.rules },
@@ -206,17 +225,25 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
 
               <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x pt-2">
                 {GAME_CATEGORIES.map((cat, idx) => (
-                  <button key={idx} className="flex flex-col items-center gap-2 group outline-none shrink-0 snap-center w-[64px] sm:w-[80px]">
-                    <div className="w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border-2 border-transparent group-hover:border-blue-500/50 transition-all duration-300 bg-[#1a1a1a] shadow-lg relative group-active:scale-95">
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedGame(cat)}
+                    className={`flex flex-col items-center gap-2 group outline-none shrink-0 snap-center w-[64px] sm:w-[80px] ${selectedGame === cat ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}
+                  >
+                    <div className={`w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full overflow-hidden border-2 transition-all duration-300 bg-[#1a1a1a] shadow-lg relative group-active:scale-95 ${selectedGame === cat ? 'border-blue-500' : 'border-transparent group-hover:border-blue-500/50'}`}>
+                      <div className={`absolute inset-0 transition-colors z-10 ${selectedGame === cat ? 'bg-transparent' : 'bg-black/40 group-hover:bg-black/20'}`} />
                       <img
-                        src={`https://picsum.photos/seed/${cat}game/100/100`}
+                        src={
+                          cat === 'minecraft' ? 'https://picsum.photos/seed/minecraft/100/100' :
+                            cat === 'roblox' ? 'https://picsum.photos/seed/roblox/100/100' :
+                              'https://picsum.photos/seed/streaming/100/100'
+                        }
                         alt={cat}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                       />
                     </div>
-                    <span className="text-[11px] sm:text-xs font-semibold text-gray-400 group-hover:text-white text-center leading-tight transition-colors">
+                    <span className={`text-[11px] sm:text-xs font-semibold text-center leading-tight transition-colors ${selectedGame === cat ? 'text-blue-400' : 'text-gray-400 group-hover:text-white'}`}>
                       {t[cat as keyof typeof t]}
                     </span>
                   </button>
@@ -341,63 +368,56 @@ export default function Marketplace({ lang }: { lang: 'TH' | 'EN' }) {
           </div>
         </div>
 
-        {/* Product Card */}
-        <div className="bg-[#101017] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors cursor-pointer group relative overflow-hidden flex flex-col gap-3">
-          {/* Instant Delivery Badge */}
-          <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
-            <Sparkles size={10} /> {t.instantDelivery}
-          </div>
-
-          <div className="flex justify-between items-start mt-2">
-            <h3 className="text-white font-medium flex items-center gap-2 text-[15px] group-hover:text-blue-400 transition-colors">
-              <Monitor size={16} className="text-blue-400" /> Cs2 prime + inventory 25000r
-            </h3>
-            <div className="bg-[#0c1f17] border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(16,185,129,0.1)]">
-              $ 202.95
+        {/* P2P Listing Product Cards */}
+        {MOCK_PRODUCTS[selectedGame as keyof typeof MOCK_PRODUCTS].map((product) => (
+          <div key={product.id} className="bg-[#101017] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors cursor-pointer group relative overflow-hidden flex flex-col gap-3">
+            {/* Instant Delivery Badge */}
+            <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+              <Sparkles size={10} /> {t.instantDelivery}
             </div>
-          </div>
 
-          <div className="flex flex-wrap gap-2 items-center">
-            {/* Stock Badge */}
-            <span className="px-2 py-0.5 bg-[#102a1e] border border-blue-500/20 text-blue-400 rounded text-[10px] font-semibold flex items-center gap-1">
-              <Box size={10} /> {t.stock} 45
-            </span>
-            <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">SDA</span>
-            <span className="px-2 py-0.5 bg-[#2a1616] border border-red-500/20 text-red-400 rounded text-[10px] font-medium flex items-center gap-1">
-              <Clock size={10} /> {t.lastSeen}
-            </span>
-            <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{t.warranty}</span>
-            <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{t.played}</span>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <span className="px-2 py-0.5 bg-[#2a1616] border border-red-500/20 text-red-400 rounded text-[10px] font-medium flex items-center gap-1">
-              <AlertTriangle size={10} /> {t.lastTransaction}
-            </span>
-          </div>
-
-          {/* Games inside product */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 mt-1 scrollbar-hide">
-            <div className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
-              <img src="https://picsum.photos/seed/cs2/20/20" alt="CS2" className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
-              <div className="flex flex-col">
-                <span className="text-[9px] text-purple-400 font-bold bg-purple-500/10 px-1 rounded inline-block">18,452</span>
+            <div className="flex justify-between items-start mt-2">
+              <h3 className="text-white font-medium flex items-center gap-2 text-[15px] group-hover:text-blue-400 transition-colors">
+                <Monitor size={16} className="text-blue-400" /> {product.title}
+              </h3>
+              <div className="bg-[#0c1f17] border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-md font-bold text-sm shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+                $ {product.price.toFixed(2)}
               </div>
-              <span className="text-[10px] font-medium text-gray-300 ml-0.5">CS2 Prime 23 lvl</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
-              <img src="https://picsum.photos/seed/beyond/20/20" alt="Beyond" className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
-              <span className="text-[10px] font-medium text-gray-300">Beyond: Two Souls</span>
+
+            <div className="flex flex-wrap gap-2 items-center">
+              {/* Stock Badge */}
+              <span className="px-2 py-0.5 bg-[#102a1e] border border-blue-500/20 text-blue-400 rounded text-[10px] font-semibold flex items-center gap-1">
+                <Box size={10} /> {t.stock} {product.stock}
+              </span>
+              <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{product.type}</span>
+              <span className="px-2 py-0.5 bg-[#2a1616] border border-red-500/20 text-red-400 rounded text-[10px] font-medium flex items-center gap-1">
+                <Clock size={10} /> {t.lastSeen}
+              </span>
+              <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{t.warranty}</span>
+              <span className="px-2 py-0.5 bg-[#141414] border border-white/5 rounded text-[10px] font-medium text-gray-400">{t.played}</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
-              <img src="https://picsum.photos/seed/soundpad/20/20" alt="Soundpad" className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
-              <span className="text-[10px] font-medium text-gray-300">Soundpad</span>
+
+            <div className="flex flex-wrap gap-2">
+              <span className="px-2 py-0.5 bg-[#2a1616] border border-red-500/20 text-red-400 rounded text-[10px] font-medium flex items-center gap-1">
+                <AlertTriangle size={10} /> {t.lastTransaction}
+              </span>
             </div>
-            <div className="px-2 py-1 bg-[#141414] rounded-md text-[10px] font-medium text-gray-400 border border-white/5">
-              {t.games}
+
+            {/* Games inside product */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 mt-1 scrollbar-hide">
+              {product.games.map((g, i) => (
+                <div key={i} className="flex items-center gap-1.5 bg-[#141414] rounded-md p-1 pr-2 border border-white/5">
+                  <img src={`https://picsum.photos/seed/${g}/20/20`} alt={g} className="w-5 h-5 rounded" referrerPolicy="no-referrer" />
+                  <span className="text-[10px] font-medium text-gray-300 ml-0.5">{g}</span>
+                </div>
+              ))}
+              <div className="px-2 py-1 bg-[#141414] rounded-md text-[10px] font-medium text-gray-400 border border-white/5">
+                {t.games}
+              </div>
             </div>
           </div>
-        </div>
+        ))}
 
       </main>
     </div>
